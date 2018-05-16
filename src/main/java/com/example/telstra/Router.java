@@ -4,9 +4,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Properties;
-
 import javax.jms.ConnectionFactory;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ConsumerTemplate;
@@ -14,18 +12,13 @@ import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.jms.JmsComponent;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.example.helpers.StringConstants;
 import com.example.models.PropertiesCBR;
 
 @Component
 public class Router {
 
-	@Autowired
-	public PropertiesCBR getPropertiesCBR = new PropertiesCBR();
-	
     private InputStream input;	
  	
 	private static final Logger logger = Logger.getLogger(Router.class);		
@@ -36,9 +29,7 @@ public class Router {
 	public void exec() {
 		CamelContext camelctx = new DefaultCamelContext();
 		try {
-			
-			//System.out.println(getPropertiesCBR.getActivemqurl());
-			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(getPropertiesCBR.getActivemqurl());
+			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(PropertiesCBR.getActivemqurl());
 			camelctx.addComponent("jms", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
 			ConsumerTemplate consumer = camelctx.createConsumerTemplate();
 			ProducerTemplate ptemplate=camelctx.createProducerTemplate();
@@ -46,7 +37,7 @@ public class Router {
 			int i=1;
 		
 			Calendar endTime=Calendar.getInstance();
-			endTime.add(Calendar.MINUTE,getPropertiesCBR.getConfigloadingtime());
+			endTime.add(Calendar.MINUTE,PropertiesCBR.getConfigloadingtime());
 			Calendar tempTime;		
 			logger.info(endTime);
 			
@@ -61,22 +52,22 @@ public class Router {
 					logger.info(tempTime);
 					logger.info(endTime);				
 					endTime=Calendar.getInstance();
-					endTime.add(Calendar.MINUTE,getPropertiesCBR.getConfigloadingtime());
+					endTime.add(Calendar.MINUTE,PropertiesCBR.getConfigloadingtime());
 				}
-				logger.info("cutoff%"+getPropertiesCBR.getLegacyqueuepercentage());
-				if(i>getPropertiesCBR.getCutoffpercentage()) {
+				logger.info("cutoff%"+PropertiesCBR.getLegacyqueuepercentage());
+				if(i>PropertiesCBR.getCutoffpercentage()) {
 					i=1;
 				}
-				String result = consumer.receiveBody("jms:queue:"+getPropertiesCBR.getEmsbb(), String.class);
+				String result = consumer.receiveBody("jms:queue:"+PropertiesCBR.getEmsbb(), String.class);
 				
-				if(i<=getPropertiesCBR.getLegacyqueuepercentage()) {
-				ptemplate.sendBody("jms:queue:"+getPropertiesCBR.getLegacyNBN(), result);
-		        logger.info(i+"-LegacyNBNQueue-"+getPropertiesCBR.getLegacyNBN());
+				if(i<=PropertiesCBR.getLegacyqueuepercentage()) {
+				ptemplate.sendBody("jms:queue:"+PropertiesCBR.getLegacyNBN(), result);
+		        logger.info(i+"-LegacyNBNQueue-"+PropertiesCBR.getLegacyNBN());
 		        i++;
 		        } 
 				else {
-					ptemplate.sendBody("jms:queue:"+getPropertiesCBR.getNbnPlus(), result);
-					logger.info(i+"-B2BGW-NBNPlus-"+getPropertiesCBR.getNbnPlus());
+					ptemplate.sendBody("jms:queue:"+PropertiesCBR.getNbnPlus(), result);
+					logger.info(i+"-B2BGW-NBNPlus-"+PropertiesCBR.getNbnPlus());
 					i++;
 				}
 			}	        
@@ -104,18 +95,14 @@ public class Router {
 			
 		    input  = new FileInputStream("./myvolume/config.properties"); 			
 			prop.load(input);
-		    
-		    //System.out.println("Properties"+prop);
-		    //System.out.println(getPropertiesCBR.getEmsbb());
-		    getPropertiesCBR.setEmsbb(prop.getProperty(StringConstants.EMS_BB));
-			//System.out.println(getPropertiesCBR.getEmsbb());
-			getPropertiesCBR.setLegacyNBN(prop.getProperty(StringConstants.LEGACY_NBN));
-			getPropertiesCBR.setNbnPlus(prop.getProperty(StringConstants.NBN_PLUS));
-			getPropertiesCBR.setCutoffpercentage(Integer.parseInt(prop.getProperty(StringConstants.CUTOFFPERCENTAGE)));
-			getPropertiesCBR.setLegacyqueuepercentage(Integer.parseInt(prop.getProperty(StringConstants.LEGACYQUEUEPERCENTAGE)));
-			getPropertiesCBR.setActivemqurl(prop.getProperty(StringConstants.ACTIVEMQURL));
-			//System.out.println(getPropertiesCBR.getActivemqurl());
-			getPropertiesCBR.setConfigloadingtime(Integer.parseInt(prop.getProperty(StringConstants.CONFIGLOADINGTIME)));
+		  
+		    PropertiesCBR.setEmsbb(prop.getProperty(StringConstants.EMS_BB));		
+			PropertiesCBR.setLegacyNBN(prop.getProperty(StringConstants.LEGACY_NBN));
+			PropertiesCBR.setNbnPlus(prop.getProperty(StringConstants.NBN_PLUS));
+			PropertiesCBR.setCutoffpercentage(Integer.parseInt(prop.getProperty(StringConstants.CUTOFFPERCENTAGE)));
+			PropertiesCBR.setLegacyqueuepercentage(Integer.parseInt(prop.getProperty(StringConstants.LEGACYQUEUEPERCENTAGE)));
+			PropertiesCBR.setActivemqurl(prop.getProperty(StringConstants.ACTIVEMQURL));		
+			PropertiesCBR.setConfigloadingtime(Integer.parseInt(prop.getProperty(StringConstants.CONFIGLOADINGTIME)));
 						
 			input.close();
 			

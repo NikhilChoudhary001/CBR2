@@ -13,49 +13,49 @@ public class PropertiesCBR {
 	private static String activemqurl;
 	private static int configloadingtime;
 	
-	
-	public String getEmsbb() {
+	public static String getEmsbb() {
 		return emsbb;
 	}
-	public void setEmsbb(String emsbb) {
-		this.emsbb = emsbb;
+	public static void setEmsbb(String emsbb) {
+		PropertiesCBR.emsbb = emsbb;
 	}
-	public String getLegacyNBN() {
+	public static String getLegacyNBN() {
 		return legacyNBN;
 	}
-	public void setLegacyNBN(String legacyNBN) {
-		this.legacyNBN = legacyNBN;
+	public static void setLegacyNBN(String legacyNBN) {
+		PropertiesCBR.legacyNBN = legacyNBN;
 	}
-	public String getNbnPlus() {
+	public static String getNbnPlus() {
 		return nbnPlus;
 	}
-	public void setNbnPlus(String nbnPlus) {
-		this.nbnPlus = nbnPlus;
+	public static void setNbnPlus(String nbnPlus) {
+		PropertiesCBR.nbnPlus = nbnPlus;
 	}
-	public int getCutoffpercentage() {
+	public static int getCutoffpercentage() {
 		return cutoffpercentage;
 	}
-	public void setCutoffpercentage(int cutoffpercentage) {
-		this.cutoffpercentage = cutoffpercentage;
+	public static void setCutoffpercentage(int cutoffpercentage) {
+		PropertiesCBR.cutoffpercentage = cutoffpercentage;
 	}
-	public int getLegacyqueuepercentage() {
+	public static int getLegacyqueuepercentage() {
 		return legacyqueuepercentage;
 	}
-	public void setLegacyqueuepercentage(int legacyqueuepercentage) {
-		this.legacyqueuepercentage = legacyqueuepercentage;
+	public static void setLegacyqueuepercentage(int legacyqueuepercentage) {
+		PropertiesCBR.legacyqueuepercentage = legacyqueuepercentage;
 	}
-	public String getActivemqurl() {
+	public static String getActivemqurl() {
 		return activemqurl;
 	}
-	public void setActivemqurl(String activemqurl) {
-		this.activemqurl = activemqurl;
+	public static void setActivemqurl(String activemqurl) {
+		PropertiesCBR.activemqurl = activemqurl;
 	}
-	public int getConfigloadingtime() {
+	public static int getConfigloadingtime() {
 		return configloadingtime;
 	}
-	public void setConfigloadingtime(int configloadingtime) {
-		this.configloadingtime = configloadingtime;
+	public static void setConfigloadingtime(int configloadingtime) {
+		PropertiesCBR.configloadingtime = configloadingtime;
 	}
+	
 	
 	
 }
