@@ -16,9 +16,9 @@ phases:
       - $(aws ecr get-login --no-include-email --region ap-southeast-2)
   build:
     commands:
-      - docker build -t message-router1 .
+      - docker build -t message-router2 .
       - docker pull webcenter/activemq
-      - docker tag message-router1:latest 340826353137.dkr.ecr.ap-southeast-2.amazonaws.com/test:message-router_1.0.0
+      - docker tag message-router2:latest 340826353137.dkr.ecr.ap-southeast-2.amazonaws.com/test:message-router_1.0.0
       - docker tag webcenter/activemq:latest 340826353137.dkr.ecr.ap-southeast-2.amazonaws.com/test:activemq_1.0.0
   post_build:
     commands:
